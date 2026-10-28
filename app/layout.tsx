@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import AppShell from "@/components/AppShell";
+import { ClerkProvider } from "@clerk/nextjs";
+import { dark } from "@clerk/ui/themes";
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 const bricolage = Bricolage_Grotesque({
@@ -25,16 +27,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={cn("h-full antialiased", geist.variable, bricolage.variable)}
+    <ClerkProvider
+      appearance={{
+        theme: dark,
+        variables: { colorPrimary: "oklch(0.74 0.16 55)" },
+      }}
     >
-      <body className="min-h-full flex flex-col">
-        <TooltipProvider>
-          <AppShell> {children}</AppShell>
-        </TooltipProvider>
-        <Toaster richColors />
-      </body>
-    </html>
+      <html
+        lang="en"
+        className={cn("h-full antialiased", geist.variable, bricolage.variable)}
+      >
+        <body className="min-h-full flex flex-col">
+          <TooltipProvider>
+            <AppShell> {children}</AppShell>
+          </TooltipProvider>
+          <Toaster richColors />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
